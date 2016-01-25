@@ -38,6 +38,7 @@ public class NaiveVmAllocationPolicy extends VmAllocationPolicy {
         List hostlist = getHostList();
         for (Object aHostlist : hostlist) {
             Host host = (Host) aHostlist;
+
             if (vm.getMips() <= host.getAvailableMips()) {
                 host.addMigratingInVm(vm);
                 return true;
