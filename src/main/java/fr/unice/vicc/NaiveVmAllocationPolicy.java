@@ -35,6 +35,14 @@ public class NaiveVmAllocationPolicy extends VmAllocationPolicy {
 
     @Override
     public boolean allocateHostForVm(Vm vm) {        
+        List hostlist = getHostList();
+        for (Object aHostlist : hostlist) {
+            Host host = (Host) aHostlist;
+            if (vm.getMips() <= host.getAvailableMips()) {
+                host.addMigratingInVm(vm);
+                return true;
+            }
+        }
         return false;
     }
 
