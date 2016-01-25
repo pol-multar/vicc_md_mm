@@ -49,11 +49,18 @@ public class NaiveVmAllocationPolicy extends VmAllocationPolicy {
 
     @Override
     public Host getHost(Vm vm) {
-        return null;
+
+        return vm.getHost();
+
     }
 
     @Override
     public Host getHost(int vmId, int userId) {
+        for (Vm vm : hoster.keySet()){
+            if(vm.getId()==vmId && vm.getUserId()==userId){
+                return vm.getHost();
+            }
+        }
         return null;
     }
 }
