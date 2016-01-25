@@ -14,12 +14,14 @@ import java.util.Map;
  */
 public class NaiveVmAllocationPolicy extends VmAllocationPolicy {
 
-    /** The map to track the server that host each running VM. */
-    private Map<Vm,Host> hoster;
+    /**
+     * The map to track the server that host each running VM.
+     */
+    private Map<Vm, Host> hoster;
 
     public NaiveVmAllocationPolicy(List<? extends Host> list) {
         super(list);
-        hoster =new HashMap<>();
+        hoster = new HashMap<>();
     }
 
     @Override
@@ -34,12 +36,23 @@ public class NaiveVmAllocationPolicy extends VmAllocationPolicy {
     }
 
     @Override
-    public boolean allocateHostForVm(Vm vm) {        
+    public boolean allocateHostForVm(Vm vm) {
+
+        for (Host host : getHostList()) {
+            if (host.vmCreate(vm)) {
+                hoster.put(vm, host);
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public boolean allocateHostForVm(Vm vm, Host host) {
+        if (host.vmCreate(vm)) {
+            hoster.put(vm, host);
+            return true;
+        }
         return false;
     }
 
@@ -49,15 +62,13 @@ public class NaiveVmAllocationPolicy extends VmAllocationPolicy {
 
     @Override
     public Host getHost(Vm vm) {
-
         return vm.getHost();
-
     }
 
     @Override
     public Host getHost(int vmId, int userId) {
-        for (Vm vm : hoster.keySet()){
-            if(vm.getId()==vmId && vm.getUserId()==userId){
+        for (Vm vm : hoster.keySet()) {
+            if (vm.getId() == vmId && vm.getUserId() == userId) {
                 return vm.getHost();
             }
         }
