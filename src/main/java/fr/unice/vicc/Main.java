@@ -9,6 +9,7 @@ import org.cloudbus.cloudsim.power.PowerHost;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -85,7 +86,9 @@ public class Main {
             if (!input.isDirectory()) {
                 quit(WORKLOAD + " is not a folder");
             }
-            for (File f : input.listFiles()) {
+            File[] fs = input.listFiles();
+            Arrays.sort(fs);
+            for (File f : fs) {
                 try {
                     System.out.println("Day " + f.getName());
                     Revenue r = simulateDay(f.getName(), policy);
