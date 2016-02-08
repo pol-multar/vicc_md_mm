@@ -26,7 +26,7 @@ public class WorstFitVmAllocation extends VmAllocationPolicy {
     }
     @Override
     public boolean allocateHostForVm(Vm vm) {
-        List<Host> hosts =  getHostList();
+        List<Host> hosts = getHostList();
         hosts.sort(new HostAvailabilityComparator());
         Host bestHost = hosts.get(0);
 

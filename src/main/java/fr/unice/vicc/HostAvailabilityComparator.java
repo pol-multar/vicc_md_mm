@@ -14,7 +14,7 @@ public class HostAvailabilityComparator implements Comparator<Host> {
         double mipsAvailable2 = t1.getAvailableMips();
 
         int ram1 = host.getRamProvisioner().getAvailableRam();
-        int ram2 = host.getRamProvisioner().getAvailableRam();
+        int ram2 = t1.getRamProvisioner().getAvailableRam();
 
         double comparison = mipsAvailable1 - mipsAvailable2;
         int ramComparison = ram1 - ram2;
