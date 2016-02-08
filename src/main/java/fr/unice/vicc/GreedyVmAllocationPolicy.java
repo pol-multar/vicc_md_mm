@@ -3,22 +3,21 @@ package fr.unice.vicc;
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.Vm;
 import org.cloudbus.cloudsim.VmAllocationPolicy;
-import org.cloudbus.cloudsim.power.PowerHost;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by yukikoo on 2/8/16.
+ */
+public class GreedyVmAllocationPolicy extends VmAllocationPolicy {
 
-public class EnergyVmAllocationPolicy extends VmAllocationPolicy {
-    /**
-     * The map to track the server that host each running VM.
-     */
-    private Map<Vm, Host> hoster;
+    private Map<Vm,Host> hoster;
 
-    public EnergyVmAllocationPolicy(List<? extends Host> list) {
+    public GreedyVmAllocationPolicy(List<? extends Host> list) {
         super(list);
-        hoster = new HashMap<>();
+        hoster =new HashMap<>();
     }
 
     @Override
@@ -28,26 +27,16 @@ public class EnergyVmAllocationPolicy extends VmAllocationPolicy {
     }
 
     @Override
-    public List<Map<String, Object>> optimizeAllocation(List<? extends Vm> list) {
-        return null;
-    }
-
-    @Override
     public boolean allocateHostForVm(Vm vm) {
-
         List<Host> hosts = getHostList();
         hosts.sort(new EnergyHostAvailabilityComparator());
         for (Host host : hosts) {
 
-            //PowerHost powerHost = (PowerHost) host;
-
+            if (host.getAvailableMips() < vm.getCurrentRequestedMaxMips()) {
+                continue;
+            }
 
             if (host.vmCreate(vm)) {
-                /*
-                if(powerHost.getMaxPower() == 135.0){
-                    System.out.println("Noooo");
-                }
-                */
                 hoster.put(vm, host);
                 return true;
             }
@@ -59,8 +48,7 @@ public class EnergyVmAllocationPolicy extends VmAllocationPolicy {
     public boolean allocateHostForVm(Vm vm, Host host) {
 
 
-        PowerHost powerHost = (PowerHost) host;
-        if(powerHost.getMaxPower() == 137.0){
+        if(!host.isSuitableForVm(vm)){
             return false;
         }
 
@@ -72,8 +60,13 @@ public class EnergyVmAllocationPolicy extends VmAllocationPolicy {
     }
 
     @Override
-    public void deallocateHostForVm(Vm vm) {
+    public List<Map<String, Object>> optimizeAllocation(List<? extends Vm> list) {
 
+        return null;
+    }
+
+    @Override
+    public void deallocateHostForVm(Vm vm) {
         Host host = getHost(vm);
         host.vmDestroy(vm);
     }
