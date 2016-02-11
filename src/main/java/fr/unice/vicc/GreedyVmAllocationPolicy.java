@@ -32,7 +32,8 @@ public class GreedyVmAllocationPolicy extends VmAllocationPolicy {
         hosts.sort(new EnergyHostAvailabilityComparator());
         for (Host host : hosts) {
 
-            if (host.getAvailableMips() < vm.getCurrentRequestedMaxMips()) {
+
+            if (!isSuitable(vm, host)) {
                 continue;
             }
 
@@ -42,6 +43,17 @@ public class GreedyVmAllocationPolicy extends VmAllocationPolicy {
             }
         }
         return false;
+    }
+
+    private int heuristiqueMips = 550;
+    private int heuristiqueRam = 220;
+    private int heuristiqueBW = 30000;
+
+    public boolean isSuitable(Vm vm, Host host){
+        return host.getVmScheduler().getPeCapacity() + heuristiqueMips >= vm.getCurrentRequestedMaxMips() &&
+                host.getVmScheduler().getAvailableMips() + heuristiqueMips >= vm.getCurrentRequestedTotalMips()&&
+                host.getRamProvisioner().getAvailableRam() + heuristiqueRam >= vm.getCurrentRequestedRam() &&
+                host.getBwProvisioner().getAvailableBw() +heuristiqueBW >=  vm.getCurrentRequestedBw();
     }
 
     @Override
