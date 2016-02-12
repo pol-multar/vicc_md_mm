@@ -39,15 +39,7 @@ public class EnergyVmAllocationPolicy extends VmAllocationPolicy {
         hosts.sort(new EnergyHostAvailabilityComparator());
         for (Host host : hosts) {
 
-            //PowerHost powerHost = (PowerHost) host;
-
-
             if (host.vmCreate(vm)) {
-                /*
-                if(powerHost.getMaxPower() == 135.0){
-                    System.out.println("Noooo");
-                }
-                */
                 hoster.put(vm, host);
                 return true;
             }

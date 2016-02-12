@@ -45,13 +45,15 @@ public class GreedyVmAllocationPolicy extends VmAllocationPolicy {
         return false;
     }
 
-    private int heuristiqueMips = 550;
-    private int heuristiqueRam = 220;
-    private int heuristiqueBW = 30000;
+    private int heuristiqueMips1 = 635;
+    private int heuristiqueMips2 = 100000000;
+
+    private int heuristiqueRam = 800000000;
+    private int heuristiqueBW = 10000000;
 
     public boolean isSuitable(Vm vm, Host host){
-        return host.getVmScheduler().getPeCapacity() + heuristiqueMips >= vm.getCurrentRequestedMaxMips() &&
-                host.getVmScheduler().getAvailableMips() + heuristiqueMips >= vm.getCurrentRequestedTotalMips()&&
+        return host.getVmScheduler().getPeCapacity() + heuristiqueMips1 >= vm.getCurrentRequestedMaxMips() &&
+                host.getVmScheduler().getAvailableMips() + heuristiqueMips2 >= vm.getCurrentRequestedTotalMips()&&
                 host.getRamProvisioner().getAvailableRam() + heuristiqueRam >= vm.getCurrentRequestedRam() &&
                 host.getBwProvisioner().getAvailableBw() +heuristiqueBW >=  vm.getCurrentRequestedBw();
     }
