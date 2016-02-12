@@ -69,15 +69,15 @@ This first scheduler aims only at discovering the CloudSim API. This scheduler s
 Let consider the VMs run replicated applications. To make them fault-tolerant to hardware failure, the customer expects to have the replicas running on distinct hosts.
 
 1. Implement a new scheduler (`antiAffinity` flag) that place the Vms with regards to their affinity. In practice, all Vms with an id between [0-99] must be on distinct nodes, the same with Vms having an id between [100-199], [200-299], ... .
-1. What is the theoretical complexity of this algorithm ?
-1. What is the impact of such an algorithm over the cluster hosting capacity ? Why ?
+2. What is the theoretical complexity of this algorithm ? La complexité est N*M, où N est le nombre d'host et M le nombre de VM par host
+3. What is the impact of such an algorithm over the cluster hosting capacity ? Why ? Beaucoup de resources non utilisé, mais si un client achete 100 VM, si un host crash, toute les VM ne partent pas.
 
 ### Balance the load
 
 1. Develop a scheduler that performs load balancing using a (`next fit algorithm`[http://lmgtfy.com/?q=next+fit+algorithm] (flag `nextFit`). You should observe fewer penalties with regards to the naive scheduler.
-1. Develop another algorithm based on a `worst fit algorithm` (`worstFit` flag) that balance with regards to both RAM and mips. Justify  the method you choosed to consider the two dimensions (it is ok to compare against internal tries).
-1. Which algorithms performs the best in terms of reducing the SLA violation. Why ?
-1. What is the theoretical complexity of each of the implemented scheduler ?
+2. Develop another algorithm based on a `worst fit algorithm` (`worstFit` flag) that balance with regards to both RAM and mips. Justify  the method you choosed to consider the two dimensions (it is ok to compare against internal tries).
+3. Which algorithms performs the best in terms of reducing the SLA violation. Why ? Worst fit. Avec le worst fit on essaye de faire en sorte qu'il y ai un maximum de resources disponible sur chaque machine. Automatiquement, très peu de violation SLA
+4. What is the theoretical complexity of each of the implemented scheduler ?
 
 ### Get rid of SLA violations
 

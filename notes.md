@@ -2,7 +2,7 @@
 
 ## The team
 
-- MARTINI Didier: email1
+- MARTINI Didier: me@neowutran.ovh
 - MULTARI Maxime: maxime.multari@etu.unice.fr
 
 ## Comments
